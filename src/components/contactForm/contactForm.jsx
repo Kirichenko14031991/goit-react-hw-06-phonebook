@@ -1,38 +1,55 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { FormContainer, FormLabel, FormInput, FormButton } from './contactForm.styled';
+import { addContact } from 'components/redux/contactSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  FormContainer,
+  FormLabel,
+  FormInput,
+  FormButton,
+} from './contactForm.styled';
+import { toast } from 'react-toastify';
 
-const ContactForm = ({ onFormSubmit, contacts }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    number: ''
-  });
+export const ContactForm = () => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  const { name, number } = formData;
+  const dispatch = useDispatch();
+  const itemValue = useSelector(state => state.contacts.items);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      default:
+        return;
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
+    const returnContact =
+      itemValue &&
+      itemValue.find(contact =>
+        contact.name.toLowerCase().includes(name.toLowerCase())
+      );
 
-    const isNameExist = contacts.some(contact =>
-      contact.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (isNameExist) {
-      alert(`${name} is already in contacts.`);
-      return;
+    if (returnContact) {
+      reset();
+      return toast.error(`${name} is already in contacts`);
     }
 
-    onFormSubmit(formData);
+    dispatch(addContact({ name, number }));
     reset();
   };
 
   const reset = () => {
-    setFormData({ name: '', number: '' });
+    setName('');
+    setNumber('');
   };
 
   return (
@@ -65,11 +82,6 @@ const ContactForm = ({ onFormSubmit, contacts }) => {
       <FormButton type="submit">Add contact</FormButton>
     </FormContainer>
   );
-};
-
-ContactForm.propTypes = {
-  onFormSubmit: PropTypes.func.isRequired,
-  contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string.isRequired)),
 };
 
 export default ContactForm;

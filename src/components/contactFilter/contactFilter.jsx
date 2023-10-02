@@ -13,7 +13,7 @@ const Filter = () => {
 
   return (
     <FilterLabel>
-      Find contacts by name
+      Find contact by name
       <FilterInput
         value={filter}
         onChange={filterHandler}

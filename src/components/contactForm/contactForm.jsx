@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { addContact } from 'components/redux/contactSlice';
+import { nanoid } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   FormContainer,
@@ -41,7 +42,7 @@ export const ContactForm = () => {
       return toast.error(`${name} is already in contacts`);
     }
 
-    dispatch(addContact({ name, number }));
+    dispatch(addContact({ id: nanoid(), name, number }));
     reset();
   };
 

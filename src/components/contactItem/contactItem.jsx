@@ -10,11 +10,10 @@ import {
 const ContactItem = ({ id, name, number }) => {
   const dispatch = useDispatch();
   return (
-    <ListItem key={id}>
+    <ListItem key={id} >
       <ContactName>{name}</ContactName>
       <ContactNumber>{number}</ContactNumber>
-      <DeleteButton onClick={() => dispatch(deleteContact(id))}>
-        Delete
+      <DeleteButton onClick={() => dispatch(deleteContact(id))}>Delete
       </DeleteButton>
     </ListItem>
   );

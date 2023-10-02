@@ -14,7 +14,7 @@ export const ContactForm = () => {
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
-  const itemValue = useSelector(state => state.contacts.items);
+  const contacts = useSelector(state => state.contacts.contacts);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -32,11 +32,9 @@ export const ContactForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const returnContact =
-      itemValue &&
-      itemValue.find(contact =>
-        contact.name.toLowerCase().includes(name.toLowerCase())
-      );
+    const returnContact = contacts.find(contact =>
+      contact.name.toLowerCase().includes(name.toLowerCase())
+    );
 
     if (returnContact) {
       reset();

@@ -4,7 +4,7 @@ import { ListContainer } from './contactList.styled';
 
 const ContactList = () => {
   const filter = useSelector(state => state.filter.filter);
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(state => state.contacts.items);
 
   const getFilteredContacts = () => {
     const normalizedFilter = filter.toLowerCase();
@@ -18,13 +18,8 @@ const ContactList = () => {
 
   return (
     <ListContainer>
-      {filteredContacts.map(contact => (
-        <ContactItem
-          key={contact.id}
-          id={contact.id}
-          name={contact.name}
-          number={contact.number}
-        />
+      {filteredContacts.map(({ id, name, number }) => (
+        <ContactItem key={id} id={id} name={name} number={number} />
       ))}
     </ListContainer>
   );
